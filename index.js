@@ -16,10 +16,12 @@ function headers(xhr) {
   var head = new Headers()
   var pairs = xhr.getAllResponseHeaders().trim().split('\n')
   pairs.forEach(function(header) {
-    var split = header.trim().split(':')
-    var key = split.shift().trim()
-    var value = split.join(':').trim()
-    head.append(key, value)
+    if(header!='') {
+      var split = header.trim().split(':')
+      var key = split.shift().trim()
+      var value = split.join(':').trim()
+      head.append(key, value)
+    }
   })
   return head
 }
@@ -68,6 +70,7 @@ module.exports = function(input, init, tag) {
         headers: headers(xhr),
         url: responseURL()
       }
+
       var body = 'response' in xhr ? xhr.response : xhr.responseText;
       remove(xhr)
       resolve(new Response(body, options))
